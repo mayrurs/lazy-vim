@@ -1,6 +1,6 @@
 return {
   {
-    "git@github.com:olimorris/codecompanion.nvim.git", -- Use SSH instead of HTTPS
+    "olimorris/codecompanion.nvim",
     lazy = false, -- Ensures the plugin loads at startup
     config = function()
       require("codecompanion").setup({
