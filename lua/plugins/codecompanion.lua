@@ -1,42 +1,67 @@
 return {
   {
     "olimorris/codecompanion.nvim",
-    lazy = false, -- Ensures the plugin loads at startup
-    config = function()
-      require("codecompanion").setup({
-        strategies = {
-          chat = {
-            adapter = "openai",
+    dependencies = {
+      {
+        "Davidyz/VectorCode",
+        version = "*",
+        build = "pipx upgrade vectorcode",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
+      -- { "echasnovski/mini.pick", config = true },
+      -- { "ibhagwan/fzf-lua", config = true },
+    },
+    opts = {
+      adapters = {
+        openai = function()
+          return require("codecompanion.adapters").extend("openai", {
+            env = {
+              api_key = os.getenv("OPENAI_KEY"),
+            },
+          })
+        end,
+        anthropic = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            env = {
+              api_key = os.getenv("ANTHROPIC_KEY"),
+            },
+          })
+        end,
+      },
+      strategies = {
+        chat = {
+          adapter = "anthropic",
+          roles = {
+            user = "user",
           },
-          inline = {
-            adapter = "anthropic",
-          },
-          cmd = {
-            adapter = "anthropic",
+          keymaps = {
+            send = {
+              modes = {
+                i = { "<C-CR>", "<C-s>" },
+              },
+            },
+            completion = {
+              modes = {
+                i = "<C-x>",
+              },
+            },
           },
         },
-        adapters = {
-          openai = function()
-            return require("codecompanion.adapters").extend("openai", {
-              env = {
-                api_key = os.getenv("OPENAI_KEY"),
-              },
-            })
-          end,
-          anthropic = function()
-            return require("codecompanion.adapters").extend("anthropic", {
-              env = {
-                api_key = os.getenv("ANTHROPIC_KEY"),
-              },
-            })
-          end,
+        inline = { adapter = "anthropic" },
+      },
+      extensions = {
+        vectorcode = {
+          opts = { add_tool = true, add_slash_command = true, tool_opts = {} },
         },
-      })
-    end,
-    keys = {
-      { "<leader>ci", ":CodeCompanion<CR>", desc = "CodeCompanion" },
-      { "<leader>cc", ":CodeCompanionChat<CR>", desc = "CodeCompanion Chat" },
-      { "<leader>ct", ":CodeCompanionToggle<CR>", desc = "CodeCompanion Chat" },
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            show_result_in_chat = true, -- Show mcp tool results in chat
+            make_vars = true, -- Convert resources to #variables
+            make_slash_commands = true, -- Add prompts as /slash commands
+          },
+        },
+      },
     },
   },
 }
