@@ -2,12 +2,6 @@ return {
   {
     "olimorris/codecompanion.nvim",
     dependencies = {
-      {
-        "Davidyz/VectorCode",
-        version = "*",
-        build = "pipx upgrade vectorcode",
-        dependencies = { "nvim-lua/plenary.nvim" },
-      },
       -- { "echasnovski/mini.pick", config = true },
       -- { "ibhagwan/fzf-lua", config = true },
     },
@@ -50,9 +44,6 @@ return {
         inline = { adapter = "anthropic" },
       },
       extensions = {
-        vectorcode = {
-          opts = { add_tool = true, add_slash_command = true, tool_opts = {} },
-        },
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
           opts = {
