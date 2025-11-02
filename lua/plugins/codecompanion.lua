@@ -7,6 +7,14 @@ return {
     },
     opts = {
       adapters = {
+        qwen2_5 = function()
+          return require("codecompanion.adapters").extend("ollama", {
+            name = "qwen2.5",
+            schema = {
+              model = { default = "qwen2.5-coder:7b" },
+            },
+          })
+        end,
         openai = function()
           return require("codecompanion.adapters").extend("openai", {
             env = {
@@ -24,7 +32,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "anthropic",
+          adapter = "qwen2_5",
           roles = {
             user = "user",
           },
@@ -41,7 +49,7 @@ return {
             },
           },
         },
-        inline = { adapter = "anthropic" },
+        inline = { adapter = "qwen2_5" },
       },
       extensions = {
         mcphub = {
