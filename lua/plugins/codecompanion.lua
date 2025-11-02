@@ -11,7 +11,7 @@ return {
           return require("codecompanion.adapters").extend("ollama", {
             name = "qwen2.5",
             env = {
-              base_url = require("config.utils").detect_ollama_url(),
+              url = require("config.utils").detect_ollama_url(),
             },
             schema = {
               model = { default = "qwen2.5-coder:7b" },
